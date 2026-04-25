@@ -1,8 +1,23 @@
-const URL_BASE = "localhost:8080/"
+const BASE_URL = "http://localhost:3000";
 
-export let endpoints = {
-  login: URL_BASE + "login/",
-  register: URL_BASE + "register/",
-  gastos: URL_BASE + "gastos/",
-  categorias: URL_BASE + "categorias/",
+export const endpoints = {
+  login: "/auth/login",
+  register: "/auth/register",
+  gastos: "/gastos",
+};
+
+export const apiRequest = async ({ endpoint, method = "GET", data }) => {
+  const response = await fetch(BASE_URL + endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data ? JSON.stringify(data) : null,
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) throw new Error(result.message);
+
+  return result;
 };
